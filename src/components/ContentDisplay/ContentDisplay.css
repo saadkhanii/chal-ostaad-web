@@ -1,0 +1,67 @@
+.content-display {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  box-sizing: border-box;
+  display: flex;
+  min-height: 0;
+}
+
+.content-panel {
+  background: #2b2b2b;
+  color: white;
+  border-radius: 12px 0 0 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid #444;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-panel h2 {
+  margin: 0;
+  padding: 20px 30px;
+  color: #fff;
+  font-size: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #444;
+  flex-shrink: 0;
+}
+
+/* UPDATED: Add bottom padding to content area */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px; /* Added bottom padding */
+}
+
+/* UPDATED: Ensure components have proper bottom spacing */
+.content-area > * {
+  flex: 1;
+  padding-bottom: 10px; /* Extra safety margin */
+}
+
+.welcome-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  padding: 30px;
+  padding-bottom: 50px; /* Extra bottom padding for welcome */
+}
+
+.welcome-info {
+  margin-top: 20px;
+  text-align: left;
+  background: #3a3a3a;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px; /* Added bottom margin */
+}

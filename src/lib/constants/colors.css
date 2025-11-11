@@ -1,0 +1,29 @@
+:root {
+  /* Your existing colors */
+  --primary-color: #fb9824;
+  --secondary-color: #2b2b2b;
+  --background-dark: #1f232b;
+  --background-light: #ffffff;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #e3e3e3;
+  --light-gray: #a2a2a2;
+
+  --bg: #f3f6f9;
+  --card-bg: #ffffff;
+  --primary: #254a7d;
+  --accent: #fb9824;
+  --muted: #6b7280;
+  --text: #111827;
+  --glass-border: rgba(0,0,0,0.06);
+  --elevation-shadow: 0 6px 18px rgba(16,24,40,0.08);
+
+  /* New colors from your app */
+  --navigation-bg: #2b2b2b; /* From Navigation */
+  --navigation-item-bg: #3a3a3a; /* From Navigation */
+  --navigation-item-hover: #4a4a4a; /* From Navigation */
+  --navigation-border: #444; /* From Navigation */
+  --logout-bg: #dc2626; /* From Navigation */
+  --logout-hover: #ef4444; /* From Navigation */
+  --logout-border: #b91c1c; /* From Navigation */
+}
