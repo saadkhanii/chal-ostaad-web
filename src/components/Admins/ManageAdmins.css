@@ -4,7 +4,9 @@
   margin: 0 auto;
   height: 100%;
   overflow-y: auto;
-  padding-bottom: 60px;
+  /* Bottom padding fix */
+  padding-bottom: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 /* Elegant Scrollbar Styles */

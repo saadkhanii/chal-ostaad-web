@@ -2,13 +2,15 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  height: 100vh; /* Changed from 100% to 100vh */
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  padding-bottom: 60px;
+  /* Bottom padding fix */
+  padding-bottom: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 .add-office-header {
@@ -36,6 +38,8 @@
   flex: 1; /* Allow form to take available space */
   overflow-y: auto; /* Enable scrolling within form if needed */
   box-sizing: border-box;
+  /* Extra bottom margin for form */
+  margin-bottom: 20px;
 }
 
 .form-section {
@@ -255,6 +259,8 @@
   justify-content: center;
   margin-top: 30px;
   flex-shrink: 0; /* Keep submit button visible */
+  /* Extra bottom padding for actions */
+  padding-bottom: 10px;
 }
 
 .submit-btn {
@@ -286,6 +292,8 @@
   font-weight: 500;
   margin-top: 20px;
   flex-shrink: 0;
+  /* Extra bottom margin for messages */
+  margin-bottom: 10px;
 }
 
 .message.success {
@@ -340,8 +348,10 @@
 @media (max-width: 768px) {
   .add-office-container {
     height: auto; /* Allow natural height on mobile */
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     padding: 10px;
+    /* Maintain bottom padding on mobile */
+    padding-bottom: 80px;
   }
   
   .form-grid {
@@ -390,7 +400,7 @@
 
 /* Ensure parent containers also have proper height */
 .content-display {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 

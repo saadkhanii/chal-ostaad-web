@@ -5,10 +5,11 @@ import AddAdmin from "../Admins/AddAdmin";
 import ManageCategories from "../Workers/ManageCategories";
 import ViewCategories from "../Workers/ViewCategories";
 import AddWorker from "../Workers/AddWorker";
+import ManageWorkers from "../Workers/ManageWorkers";
 import ViewWorkers from "../Workers/ViewWorkers";
 import AddOffice from '../Offices/AddOffice';
 import ViewOffices from '../Offices/ViewOffices';
-import ManageOffices from '../Offices/ManageOffices'; // NEW: Import ManageOffices component
+import ManageOffices from '../Offices/ManageOffices';
 import ViewAdmins from '../Admins/ViewAdmins';
 import WorkerVerification from '../Workers/WorkerVerification';
 import DashboardFull from '../Dashboard/DashboardFull';
@@ -51,7 +52,10 @@ const ContentDisplay = ({ activeItem, userRole }) => {
     };
 
     const getActiveComponent = () => {
-        if (!activeItem) return null;
+        // If no active item or dashboard is selected, show DashboardFull
+        if (!activeItem || activeItem === 'dashboard') {
+            return <DashboardFull />;
+        }
 
         // First, check if it's a direct menu item
         let menuItem = menuConfig.find(item => item.id === activeItem);
@@ -79,6 +83,7 @@ const ContentDisplay = ({ activeItem, userRole }) => {
                         // Workers submenu
                         'view-workers': ViewWorkers,
                         'add-worker': AddWorker,
+                        'manage-workers': ManageWorkers,
                         'manage-categories': ManageCategories, 
                         'view-categories': ViewCategories,
                         'worker-verification': WorkerVerification,
@@ -87,7 +92,7 @@ const ContentDisplay = ({ activeItem, userRole }) => {
                         // Offices submenu
                         'view-offices': ViewOffices,
                         'add-office': AddOffice,
-                        'manage-offices': ManageOffices, // NEW: Added ManageOffices component
+                        'manage-offices': ManageOffices,
                         'office-zones': OfficeZones,
                         'office-schedule': OfficeSchedule,
                     };
@@ -98,11 +103,14 @@ const ContentDisplay = ({ activeItem, userRole }) => {
             }
         }
 
-        return null;
+        return <DashboardFull />; // Fallback to dashboard
     };
 
     const getActiveTitle = () => {
-        if (!activeItem) return "Welcome";
+        // If no active item or dashboard, show dashboard title
+        if (!activeItem || activeItem === 'dashboard') {
+            return "Dashboard";
+        }
 
         // Check main menu
         let menuItem = menuConfig.find(item => item.id === activeItem);
@@ -116,32 +124,19 @@ const ContentDisplay = ({ activeItem, userRole }) => {
             }
         }
 
-        return "Unknown";
+        return "Dashboard"; // Fallback title
     };
 
     const activeComponent = getActiveComponent();
 
     return (
         <div className="content-display">
-            {activeComponent ? (
-                <div className="content-panel">
-                    <h2>{getActiveTitle()}</h2>
-                    <div className="content-area">
-                        {activeComponent}
-                    </div>
+            <div className="content-panel">
+                <h2>{getActiveTitle()}</h2>
+                <div className="content-area">
+                    {activeComponent}
                 </div>
-            ) : (
-                <div className="content-panel welcome-panel">
-                    <h2>Welcome to Admin Panel</h2>
-                    <div className="welcome-content">
-                        <p>Select an item from the menu to manage your system</p>
-                        <div className="welcome-info">
-                            <p><strong>Role:</strong> {userRole === "super" ? "Super Admin" : "Sub Admin"}</p>
-                            <p><strong>Permissions:</strong> {userRole === "super" ? "Full System Access" : "Limited Access"}</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+            </div>
         </div>
     );
 };

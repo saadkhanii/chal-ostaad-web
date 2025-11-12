@@ -5,7 +5,8 @@ import Navigation from "../Navigation/Navigation";
 import ContentDisplay from "../ContentDisplay/ContentDisplay";
 
 const Dashboard = ({ userData, onLogout }) => {
-  const [activeItem, setActiveItem] = useState(null);
+  // Set 'dashboard' as the default active item
+  const [activeItem, setActiveItem] = useState('dashboard');
 
   return (
     <div className="dash-root">

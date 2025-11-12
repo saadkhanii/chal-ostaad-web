@@ -50,6 +50,8 @@
   margin-bottom: 10px;
   min-height: 0;
   padding-right: 5px;
+  /* Extra bottom spacing */
+  padding-bottom: 20px;
 }
 
 /* Elegant Scrollbar for Nav Items */
@@ -151,6 +153,8 @@
   max-height: 300px;
   overflow-y: auto;
   padding-right: 5px;
+  /* Extra bottom spacing for submenus */
+  padding-bottom: 10px;
 }
 
 /* Elegant Scrollbar for Submenu Items */
@@ -220,6 +224,8 @@
   flex-shrink: 0;
   border-top: 1px solid var(--navigation-border);
   padding-top: 10px;
+  /* Extra bottom spacing for footer */
+  padding-bottom: 20px;
 }
 
 .logout-item {
@@ -248,5 +254,11 @@
   
   .submenu-items::-webkit-scrollbar {
     width: 2px;
+  }
+  
+  /* Maintain bottom padding on mobile */
+  .navigation-panel {
+    padding-bottom: 80px;
+    min-height: calc(100vh - 80px);
   }
 }

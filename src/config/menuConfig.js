@@ -3,7 +3,7 @@ export const menuConfig = [
     id: 'dashboard',
     name: 'Dashboard',
     superAdmin: { component: 'DashboardFull', permission: 'full' },
-    subAdmin: { component: 'DashboardLimited', permission: 'view' }
+    subAdmin: { component: 'DashboardLimited', permission: 'full' }
   },
   {
     id: 'admins',
@@ -25,6 +25,7 @@ export const menuConfig = [
     submenu: [
       { id: 'view-workers', name: 'View Workers', permission: 'view' },
       { id: 'add-worker', name: 'Add Worker', permission: 'view' },
+      { id: 'manage-workers', name: 'Manage Workers', permission: 'view' },
       { id: 'manage-categories', name: 'Manage Categories', permission: 'full' },
       { id: 'view-categories', name: 'View Categories', permission: 'view' },
       { id: 'worker-verification', name: 'Verification', permission: 'view' },

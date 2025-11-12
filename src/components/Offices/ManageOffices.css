@@ -4,7 +4,9 @@
   margin: 0 auto;
   height: 100%;
   overflow-y: auto;
-  padding-bottom: 60px;
+  /* Bottom padding fix */
+  padding-bottom: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 /* Elegant Scrollbar for Main Container */
@@ -195,6 +197,8 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  /* Extra bottom margin */
+  margin-bottom: 20px;
 }
 
 .offices-table {
@@ -653,6 +657,8 @@
   text-align: center;
   padding: 60px 20px;
   color: #aaa;
+  /* Extra bottom padding for empty state */
+  padding-bottom: 80px;
 }
 
 .empty-state p {
@@ -679,6 +685,9 @@
 @media (max-width: 768px) {
   .manage-offices-container {
     padding: 15px;
+    /* Maintain bottom padding on mobile */
+    padding-bottom: 80px;
+    min-height: calc(100vh - 80px);
   }
   
   .filters-grid {
