@@ -13,7 +13,7 @@ export const menuConfig = [
     submenu: [
       { id: 'view-admins', name: 'View Admins', permission: 'view' },
       { id: 'add-admin', name: 'Add Admin', permission: 'full' },
-      { id: 'admin-roles', name: 'Manage Roles', permission: 'full' },
+      { id: 'manage-admins', name: 'Manage Admins', permission: 'full' },
       { id: 'admin-activity', name: 'Admin Activity', permission: 'view' }
     ]
   },
@@ -39,6 +39,7 @@ export const menuConfig = [
     submenu: [
      { id: 'view-offices', name: 'View Offices', permission: 'view' },
       { id: 'add-office', name: 'Add Office', permission: 'full' },
+      { id: 'manage-offices', name: 'Manage Offices', permission: 'full' },
       { id: 'office-zones', name: 'Service Zones', permission: 'view' },
       { id: 'office-schedule', name: 'Office Hours', permission: 'view' }
     ]

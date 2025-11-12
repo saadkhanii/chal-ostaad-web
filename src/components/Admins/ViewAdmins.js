@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ViewAdmins.css';
-import { collection, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 
 const ViewAdmins = () => {
@@ -53,34 +53,6 @@ const ViewAdmins = () => {
     return statuses[status] || { label: status, color: '#757575' };
   };
 
-  // Toggle admin status
-  const toggleAdminStatus = async (adminId, currentStatus) => {
-    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-    
-    try {
-      await updateDoc(doc(db, 'admins', adminId), {
-        status: newStatus,
-        updatedAt: new Date()
-      });
-    } catch (error) {
-      console.error('Error updating admin status:', error);
-    }
-  };
-
-  // Delete admin (with confirmation)
-  const handleDeleteAdmin = async (adminId, adminName) => {
-    if (!window.confirm(`Are you sure you want to delete admin "${adminName}"? This action cannot be undone.`)) {
-      return;
-    }
-
-    try {
-      await deleteDoc(doc(db, 'admins', adminId));
-    } catch (error) {
-      console.error('Error deleting admin:', error);
-      alert('Error deleting admin: ' + error.message);
-    }
-  };
-
   if (loading) {
     return (
       <div className="view-admins-container">
@@ -93,7 +65,7 @@ const ViewAdmins = () => {
     <div className="view-admins-container">
       <div className="view-admins-header">
         <h2>View Administrators</h2>
-        <p>Manage and monitor all system administrators</p>
+        <p>Browse all system administrators (Read-only access)</p>
       </div>
 
       {/* Statistics Overview */}
@@ -286,21 +258,7 @@ const ViewAdmins = () => {
                   )}
                 </div>
 
-                <div className="admin-actions">
-                  <button 
-                    className={`action-btn status-btn ${admin.status === 'active' ? 'deactivate' : 'activate'}`}
-                    onClick={() => toggleAdminStatus(admin.id, admin.status)}
-                  >
-                    {admin.status === 'active' ? 'Deactivate' : 'Activate'}
-                  </button>
-                  <button className="action-btn edit-btn">Edit</button>
-                  <button 
-                    className="action-btn delete-btn"
-                    onClick={() => handleDeleteAdmin(admin.id, admin.name)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {/* REMOVED: Admin Actions Section */}
               </div>
             );
           })}

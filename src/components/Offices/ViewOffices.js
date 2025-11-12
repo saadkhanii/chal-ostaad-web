@@ -9,6 +9,7 @@ const ViewOffices = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [selectedOffice, setSelectedOffice] = useState(null); // NEW: For office details modal
 
   // Fetch offices and worker counts
   useEffect(() => {
@@ -92,6 +93,16 @@ const ViewOffices = () => {
       'maintenance': { label: 'Maintenance', color: '#FF9800' }
     };
     return statuses[status] || { label: status, color: '#757575' };
+  };
+
+  // NEW: Handle View Details click
+  const handleViewDetails = (office) => {
+    setSelectedOffice(office);
+  };
+
+  // NEW: Close details modal
+  const closeDetailsModal = () => {
+    setSelectedOffice(null);
   };
 
   if (loading) {
@@ -261,13 +272,144 @@ const ViewOffices = () => {
                   </div>
                 )}
                 
+                {/* UPDATED: Actions - Removed Manage Workers button */}
                 <div className="office-card-actions">
-                  <button className="btn-primary">View Details</button>
-                  <button className="btn-secondary">Manage Workers</button>
+                  <button 
+                    className="btn-primary"
+                    onClick={() => handleViewDetails(office)}
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* NEW: Office Details Modal */}
+      {selectedOffice && (
+        <div className="modal-overlay" onClick={closeDetailsModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Office Details - {selectedOffice.basicInfo.name}</h3>
+              <button className="close-btn" onClick={closeDetailsModal}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="details-section">
+                <h4>Basic Information</h4>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <label>Office Name:</label>
+                    <span>{selectedOffice.basicInfo.name}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>City:</label>
+                    <span>{selectedOffice.basicInfo.city}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Phone:</label>
+                    <span>{selectedOffice.basicInfo.phone}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Email:</label>
+                    <span>{selectedOffice.basicInfo.email || 'Not provided'}</span>
+                  </div>
+                  <div className="detail-item full-width">
+                    <label>Address:</label>
+                    <span>{selectedOffice.basicInfo.address || 'Not provided'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h4>Office Details</h4>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <label>Type:</label>
+                    <span>{getOfficeTypeBadge(selectedOffice.details.type).label}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Status:</label>
+                    <span>{getStatusBadge(selectedOffice.details.status).label}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Established:</label>
+                    <span>{selectedOffice.details.establishedDate || 'Not specified'}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Capacity:</label>
+                    <span>{selectedOffice.details.capacity || 'Not specified'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h4>Management</h4>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <label>Manager:</label>
+                    <span>{selectedOffice.management.managerName || 'Not assigned'}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Manager Phone:</label>
+                    <span>{selectedOffice.management.managerPhone || 'Not provided'}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Staff Count:</label>
+                    <span>{selectedOffice.management.staffCount} administrative staff</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h4>Location & Service</h4>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <label>Latitude:</label>
+                    <span>{selectedOffice.location.coordinates?.latitude || 'Not set'}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Longitude:</label>
+                    <span>{selectedOffice.location.coordinates?.longitude || 'Not set'}</span>
+                  </div>
+                  <div className="detail-item full-width">
+                    <label>Service Areas:</label>
+                    <div className="areas-tags-full">
+                      {selectedOffice.location.serviceAreas.map((area, index) => (
+                        <span key={index} className="area-tag">{area}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h4>Statistics</h4>
+                <div className="stats-grid-detailed">
+                  <div className="stat-item-detailed">
+                    <div className="stat-number">{selectedOffice.stats.totalWorkers}</div>
+                    <div className="stat-label">Total Workers</div>
+                  </div>
+                  <div className="stat-item-detailed">
+                    <div className="stat-number verified">{selectedOffice.stats.activeWorkers}</div>
+                    <div className="stat-label">Verified Workers</div>
+                  </div>
+                  <div className="stat-item-detailed">
+                    <div className="stat-number pending">{selectedOffice.stats.totalWorkers - selectedOffice.stats.activeWorkers}</div>
+                    <div className="stat-label">Pending Workers</div>
+                  </div>
+                  <div className="stat-item-detailed">
+                    <div className="stat-number">{selectedOffice.stats.completedJobs}</div>
+                    <div className="stat-label">Completed Jobs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn-secondary" onClick={closeDetailsModal}>Close</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

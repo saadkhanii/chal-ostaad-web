@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import AppLogo from "../../components/AppLogo/AppLogo";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebaseConfig";
 
@@ -23,10 +23,17 @@ const Login = ({ onLoginSuccess }) => {
 
       const userDoc = await getDoc(doc(db, "admins", user.uid));
       if (!userDoc.exists()) {
+        await signOut(auth);
         throw new Error("User not found or unauthorized.");
       }
 
-      const { role, name } = userDoc.data();
+      const { role, name, status } = userDoc.data();
+
+      // Check if admin is active
+      if (status !== 'active') {
+        await signOut(auth);
+        throw new Error("Your account is inactive. Please contact super admin.");
+      }
 
       if (onLoginSuccess) {
         onLoginSuccess({
@@ -38,6 +45,7 @@ const Login = ({ onLoginSuccess }) => {
       console.error("Login error:", err);
       if (err.code === "auth/user-not-found") setError("User not found.");
       else if (err.code === "auth/wrong-password") setError("Incorrect password.");
+      else if (err.message.includes("inactive")) setError(err.message);
       else setError(err.message);
     } finally {
       setLoading(false);

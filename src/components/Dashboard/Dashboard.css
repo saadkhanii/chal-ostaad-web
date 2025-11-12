@@ -45,6 +45,8 @@
   border: 1px solid var(--glass-border);
   border-radius: 0 0 12px 0;
   overflow: hidden;
+  align-items: center; 
+  justify-content: center; 
 }
 
 .cell-0-1 .panel {

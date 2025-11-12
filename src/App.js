@@ -20,12 +20,31 @@ function App() {
           // Fetch user data from Firestore
           const userDoc = await getDoc(doc(db, "admins", user.uid));
           if (userDoc.exists()) {
-            const { role, name } = userDoc.data();
+            const { role, name, status } = userDoc.data();
+            
+            // Check if admin is active
+            if (status !== 'active') {
+              console.log("Admin is inactive, signing out...");
+              await signOut(auth);
+              setIsLoggedIn(false);
+              setUserData({ role: "", name: "" });
+              setLoading(false);
+              return;
+            }
+            
             setUserData({ role: role.toLowerCase(), name: name });
             setIsLoggedIn(true);
+          } else {
+            // User not found in admins collection
+            await signOut(auth);
+            setIsLoggedIn(false);
+            setUserData({ role: "", name: "" });
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
+          await signOut(auth);
+          setIsLoggedIn(false);
+          setUserData({ role: "", name: "" });
         }
       } else {
         setIsLoggedIn(false);

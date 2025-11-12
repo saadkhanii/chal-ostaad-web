@@ -2,19 +2,20 @@ import React from "react";
 import "./ContentDisplay.css";
 import { menuConfig } from "../../config/menuConfig";
 import AddAdmin from "../Admins/AddAdmin";
-import ManageCategories from "../Workers/ManageCategories"; // Updated import
+import ManageCategories from "../Workers/ManageCategories";
 import ViewCategories from "../Workers/ViewCategories";
 import AddWorker from "../Workers/AddWorker";
 import ViewWorkers from "../Workers/ViewWorkers";
 import AddOffice from '../Offices/AddOffice';
 import ViewOffices from '../Offices/ViewOffices';
+import ManageOffices from '../Offices/ManageOffices'; // NEW: Import ManageOffices component
 import ViewAdmins from '../Admins/ViewAdmins';
 import WorkerVerification from '../Workers/WorkerVerification';
 import DashboardFull from '../Dashboard/DashboardFull';
+import ManageAdmins from '../Admins/ManageAdmins';
 
 // Placeholder components for other menu items
 const AllAdmins = () => <div>All Admins Component - Coming Soon!</div>;
-const AdminRoles = () => <div>Admin Roles Management - Coming Soon!</div>;
 const AdminActivity = () => <div>Admin Activity Logs - Coming Soon!</div>;
 const DashboardLimited = () => <div>Sub Admin Dashboard - Coming Soon!</div>;
 const WorkersFull = () => <div>Workers Management - Coming Soon!</div>;
@@ -36,7 +37,7 @@ const ContentDisplay = ({ activeItem, userRole }) => {
     const componentMap = {
         AddAdmin,
         AllAdmins,
-        AdminRoles,
+        ManageAdmins,
         AdminActivity,
         DashboardFull,
         DashboardLimited,
@@ -72,7 +73,7 @@ const ContentDisplay = ({ activeItem, userRole }) => {
                         // Admins submenu
                         'view-admins': ViewAdmins,
                         'add-admin': AddAdmin,
-                        'admin-roles': AdminRoles,
+                        'manage-admins': ManageAdmins,
                         'admin-activity': AdminActivity,
 
                         // Workers submenu
@@ -86,6 +87,7 @@ const ContentDisplay = ({ activeItem, userRole }) => {
                         // Offices submenu
                         'view-offices': ViewOffices,
                         'add-office': AddOffice,
+                        'manage-offices': ManageOffices, // NEW: Added ManageOffices component
                         'office-zones': OfficeZones,
                         'office-schedule': OfficeSchedule,
                     };

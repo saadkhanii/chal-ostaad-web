@@ -258,23 +258,6 @@
   font-style: italic;
 }
 
-/* Actions */
-.admin-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.action-btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  flex: 1;
-  transition: all 0.2s ease;
-}
-
 .status-btn.activate {
   background: #10b981;
   color: white;

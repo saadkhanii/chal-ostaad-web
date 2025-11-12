@@ -13,6 +13,32 @@
   min-height: 0;
 }
 
+/* Elegant Scrollbar for Navigation Panel */
+.navigation-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.navigation-panel::-webkit-scrollbar-track {
+  background: var(--navigation-item-bg);
+  border-radius: 3px;
+}
+
+.navigation-panel::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.navigation-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* For Firefox */
+.navigation-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--navigation-item-bg);
+}
+
 /* Removed .nav-title styles */
 
 .nav-items {
@@ -23,6 +49,33 @@
   overflow-y: auto;
   margin-bottom: 10px;
   min-height: 0;
+  padding-right: 5px;
+}
+
+/* Elegant Scrollbar for Nav Items */
+.nav-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nav-items::-webkit-scrollbar-track {
+  background: var(--navigation-item-bg);
+  border-radius: 2px;
+}
+
+.nav-items::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.nav-items::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* For Firefox Nav Items */
+.nav-items {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--navigation-item-bg);
 }
 
 .nav-menu-group {
@@ -95,6 +148,35 @@
   gap: 2px;
   margin-left: 20px;
   margin-top: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Elegant Scrollbar for Submenu Items */
+.submenu-items::-webkit-scrollbar {
+  width: 3px;
+}
+
+.submenu-items::-webkit-scrollbar-track {
+  background: var(--navigation-item-bg);
+  border-radius: 1.5px;
+}
+
+.submenu-items::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 1.5px;
+  transition: all 0.3s ease;
+}
+
+.submenu-items::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* For Firefox Submenu Items */
+.submenu-items {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--navigation-item-bg);
 }
 
 .submenu-item {
@@ -152,4 +234,19 @@
 
 .logout-icon {
   font-size: 14px;
+}
+
+/* Responsive Scrollbar Adjustments */
+@media (max-width: 768px) {
+  .navigation-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .nav-items::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  .submenu-items::-webkit-scrollbar {
+    width: 2px;
+  }
 }

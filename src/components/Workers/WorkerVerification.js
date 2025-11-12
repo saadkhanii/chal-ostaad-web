@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './WorkerVerification.css';
-import { collection, onSnapshot, doc, updateDoc, query, where, orderBy } from 'firebase/firestore';
+import { collection, onSnapshot, doc, updateDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 
 const WorkerVerification = () => {
@@ -12,6 +12,27 @@ const WorkerVerification = () => {
   const [message, setMessage] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
   const [filterStatus, setFilterStatus] = useState('pending');
+  const [categories, setCategories] = useState({}); // NEW: Store categories mapping
+
+  // Fetch categories from Firestore
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesSnapshot = await getDocs(collection(db, 'workCategories'));
+        const categoriesMap = {};
+        
+        categoriesSnapshot.forEach(doc => {
+          categoriesMap[doc.id] = doc.data().name || 'Unknown Category';
+        });
+        
+        setCategories(categoriesMap);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Fetch workers needing verification
   useEffect(() => {
@@ -45,6 +66,11 @@ const WorkerVerification = () => {
 
     setFilteredWorkers(result);
   }, [workers, filterStatus]);
+
+  // NEW: Helper function to get category name
+  const getCategoryName = (categoryId) => {
+    return categories[categoryId] || categoryId || 'Unknown Category';
+  };
 
   // Handle verification actions
   const handleVerification = async (workerId, status, reason = '') => {
@@ -182,8 +208,9 @@ const WorkerVerification = () => {
                   
                   <div className="worker-info">
                     <h4 className="worker-name">{worker.personalInfo.name}</h4>
+                    {/* UPDATED: Use category name instead of ID */}
                     <p className="worker-details">
-                      {worker.personalInfo.phone} • {worker.workInfo.categoryId}
+                      {worker.personalInfo.phone} • {getCategoryName(worker.workInfo.categoryId)}
                     </p>
                     <p className="worker-added">
                       Added: {worker.createdAt?.toDate?.().toLocaleDateString()}
@@ -274,9 +301,10 @@ const WorkerVerification = () => {
               <div className="detail-section">
                 <h4>Work Information</h4>
                 <div className="detail-grid">
+                  {/* UPDATED: Use category name instead of ID */}
                   <div className="detail-item">
                     <label>Category:</label>
-                    <span>{selectedWorker.workInfo.categoryId}</span>
+                    <span>{getCategoryName(selectedWorker.workInfo.categoryId)}</span>
                   </div>
                   <div className="detail-item">
                     <label>Experience:</label>

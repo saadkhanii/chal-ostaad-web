@@ -13,7 +13,7 @@ const Dashboard = ({ userData, onLogout }) => {
         {/* Logo */}
         <div className="cell cell-0-0">
           <section className="panel logo-panel">
-            <AppLogo />
+            <AppLogo size="small"/>
           </section>
         </div>
 
