@@ -1,13 +1,14 @@
 .add-admin-container {
-  padding: 2rem;
-  max-width: 800px;
+  padding: 0; /* REMOVED padding since ContentDisplay handles it */
+  max-width: none; /* REMOVED max-width for full width */
   margin: 0 auto;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: visible; /* CHANGED: Let parent handle scrolling */
+  /* REMOVED: Bottom padding and min-height since ContentDisplay handles scrolling */
   background: transparent;
   position: relative;
-  padding-bottom: 80px;
-  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
 }
 
 /* Subtle background pattern */
@@ -24,50 +25,6 @@
   pointer-events: none;
 }
 
-/* Elegant Scrollbar */
-.add-admin-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.add-admin-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-}
-
-.add-admin-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--primary-color), #e58920);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.add-admin-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #e58920, #d17a1a);
-}
-
-.add-admin-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.add-admin-header h2 {
-  background: linear-gradient(135deg, #fff 0%, var(--primary-color) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  letter-spacing: -0.5px;
-  text-shadow: 0 4px 20px rgba(251, 152, 36, 0.2);
-}
-
-.add-admin-header p {
-  color: var(--muted);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
 
 /* Enhanced Form Container */
 .add-admin-form {
@@ -78,6 +35,9 @@
   backdrop-filter: blur(20px);
   box-shadow: var(--glass-shadow);
   transition: all 0.3s ease;
+  margin: 0 auto;
+  max-width: 900px; /* Keep form max-width but container is full width */
+  width: 100%;
 }
 
 .add-admin-form:hover {
@@ -474,7 +434,12 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .add-admin-container {
-    padding: 1.5rem;
+    padding: 0; /* Keep 0 padding since ContentDisplay handles it */
+  }
+  
+  .add-admin-form {
+    padding: 2rem;
+    margin: 0 1rem; /* Add horizontal margin on mobile */
   }
   
   .form-grid {
@@ -490,19 +455,11 @@
     flex-direction: column;
   }
   
-  .add-admin-form {
-    padding: 2rem;
-  }
-  
   .add-admin-header h2 {
     font-size: 2.2rem;
   }
   
   /* Adjust scrollbar for mobile */
-  .add-admin-container::-webkit-scrollbar {
-    width: 4px;
-  }
-  
   .permissions-grid::-webkit-scrollbar {
     width: 4px;
   }
@@ -510,11 +467,12 @@
 
 @media (max-width: 480px) {
   .add-admin-container {
-    padding: 1rem;
+    padding: 0;
   }
   
   .add-admin-form {
     padding: 1.5rem;
+    margin: 0 0.5rem; /* Smaller margin on very small screens */
   }
   
   .add-admin-header h2 {

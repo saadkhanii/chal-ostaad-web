@@ -214,10 +214,11 @@ const AddAdmin = () => {
 
   return (
     <div className="add-admin-container">
-      <div className="add-admin-header">
+      {/* REMOVED: Header since ContentDisplay handles it */}
+      {/* <div className="add-admin-header">
         <h2>Add New Administrator</h2>
         <p>Create a new admin account with specific permissions and access</p>
-      </div>
+      </div> */}
       
       <form onSubmit={handleSubmit} className="add-admin-form">
         {/* Basic Information Section */}

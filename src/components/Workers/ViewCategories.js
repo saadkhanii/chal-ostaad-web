@@ -5,7 +5,7 @@ import { db } from '../../firebase/firebaseConfig';
 
 const ViewCategories = () => {
   const [categories, setCategories] = useState([]);
-  const [workers, setWorkers] = useState([]); // NEW: Store workers to count by category
+  const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch categories and workers for real-time counts
@@ -19,7 +19,7 @@ const ViewCategories = () => {
       setCategories(categoriesData);
     });
 
-    // NEW: Real-time workers listener to count by category
+    // Real-time workers listener to count by category
     const workersUnsubscribe = onSnapshot(collection(db, 'workers'), (snapshot) => {
       const workersData = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -35,12 +35,12 @@ const ViewCategories = () => {
     };
   }, []);
 
-  // NEW: Calculate worker count for each category
+  // Calculate worker count for each category
   const getWorkerCountForCategory = (categoryId) => {
     return workers.filter(worker => worker.workInfo?.categoryId === categoryId).length;
   };
 
-  // NEW: Get verified worker count for each category
+  // Get verified worker count for each category
   const getVerifiedWorkerCountForCategory = (categoryId) => {
     return workers.filter(worker => 
       worker.workInfo?.categoryId === categoryId && 
@@ -63,10 +63,7 @@ const ViewCategories = () => {
 
   return (
     <div className="view-categories-container">
-      <div className="view-categories-header">
-        <h2>View Work Categories</h2>
-        <p>Browse all available service categories (Read-only access)</p>
-      </div>
+      {/* REMOVED: Header since ContentDisplay handles it */}
 
       {/* UPDATED: Statistics with real-time counts */}
       <div className="categories-stats">

@@ -1,32 +1,17 @@
 .add-office-container {
-  padding: 20px;
-  max-width: 1200px;
+  padding: 0; /* REMOVED padding since ContentDisplay handles it */
+  max-width: none; /* REMOVED max-width for full width */
   margin: 0 auto;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: visible; /* CHANGED: Let parent handle scrolling */
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  /* Bottom padding fix */
-  padding-bottom: 80px;
-  min-height: calc(100vh - 80px);
+  /* REMOVED: Bottom padding and min-height since ContentDisplay handles scrolling */
 }
 
-.add-office-header {
-  text-align: center;
-  margin-bottom: 30px;
-  flex-shrink: 0; /* Prevent header from shrinking */
-}
 
-.add-office-header h2 {
-  color: var(--white);
-  margin-bottom: 8px;
-}
-
-.add-office-header p {
-  color: var(--muted);
-}
 
 .add-office-form {
   background: var(--navigation-bg);
@@ -36,10 +21,9 @@
   width: 100%;
   max-width: 900px;
   flex: 1; /* Allow form to take available space */
-  overflow-y: auto; /* Enable scrolling within form if needed */
+  overflow-y: visible; /* CHANGED: Let parent handle scrolling */
   box-sizing: border-box;
-  /* Extra bottom margin for form */
-  margin-bottom: 20px;
+  margin: 20px 0; /* Add vertical margin instead of bottom padding */
 }
 
 .form-section {
@@ -258,9 +242,7 @@
   display: flex;
   justify-content: center;
   margin-top: 30px;
-  flex-shrink: 0; /* Keep submit button visible */
-  /* Extra bottom padding for actions */
-  padding-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .submit-btn {
@@ -292,8 +274,6 @@
   font-weight: 500;
   margin-top: 20px;
   flex-shrink: 0;
-  /* Extra bottom margin for messages */
-  margin-bottom: 10px;
 }
 
 .message.success {
@@ -347,11 +327,13 @@
 /* Responsive */
 @media (max-width: 768px) {
   .add-office-container {
-    height: auto; /* Allow natural height on mobile */
-    min-height: calc(100vh - 80px);
-    padding: 10px;
-    /* Maintain bottom padding on mobile */
-    padding-bottom: 80px;
+    height: 100%; /* Keep full height on mobile */
+    padding: 0; /* Keep 0 padding since ContentDisplay handles it */
+  }
+  
+  .add-office-form {
+    padding: 20px;
+    margin: 10px; /* Add small margin on mobile */
   }
   
   .form-grid {
@@ -362,55 +344,27 @@
   .facilities-input-group {
     flex-direction: column;
   }
-  
+}
+
+@media (max-width: 480px) {
   .add-office-form {
-    padding: 20px;
+    padding: 15px;
+    margin: 5px; /* Smaller margin on very small screens */
+  }
+  
+  .form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+  }
+  
+  .form-section h3 {
+    font-size: 16px;
   }
 }
 
-/* Enhanced Scrollbar Styling */
-.add-office-container::-webkit-scrollbar {
-  width: 12px;
-}
 
-.add-office-container::-webkit-scrollbar-track {
-  background: var(--navigation-bg);
-  border-radius: 6px;
-}
-
-.add-office-container::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 6px;
-  border: 2px solid var(--navigation-bg);
-}
-
-.add-office-container::-webkit-scrollbar-thumb:hover {
-  background: #e58920;
-}
-
-.add-office-container::-webkit-scrollbar-corner {
-  background: var(--navigation-bg);
-}
 
 /* Firefox Scrollbar */
 .add-office-container {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) var(--navigation-bg);
-}
-
-/* Ensure parent containers also have proper height */
-.content-display {
-  height: 100%;
-  overflow: hidden;
-}
-
-.content-panel {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.content-panel h2 {
-  flex-shrink: 0;
-  margin-bottom: 20px;
+  scrollbar-width: none; /* Remove scrollbar since parent handles it */
 }

@@ -96,20 +96,21 @@ const ViewWorkers = () => {
         return category ? `${category.icon} ${category.name}` : 'Unknown Category';
     };
 
-    const getStatusBadge = (worker) => {
-        const status = worker.verification.status;
-        const badgeClass = {
-            'pending': 'status-pending',
-            'verified': 'status-verified',
-            'rejected': 'status-rejected'
-        }[status] || 'status-pending';
+   const getStatusBadge = (worker) => {
+    // Safe access with fallback to 'pending'
+    const status = worker.verification?.status || 'pending';
+    const badgeClass = {
+        'pending': 'status-pending',
+        'verified': 'status-verified',
+        'rejected': 'status-rejected'
+    }[status] || 'status-pending';
 
-        return (
-            <span className={`status-badge ${badgeClass}`}>
-                {status.toUpperCase()}
-            </span>
-        );
-    };
+    return (
+        <span className={`status-badge ${badgeClass}`}>
+            {status.toUpperCase()}
+        </span>
+    );
+};
 
     // Calculate age from date of birth
     const calculateAge = (birthDate) => {
@@ -130,7 +131,6 @@ const ViewWorkers = () => {
         return (
             <div className="view-workers-container">
                 <div className="loading-state">
-                    <div className="loading-spinner"></div>
                     Loading workers...
                 </div>
             </div>
@@ -139,10 +139,6 @@ const ViewWorkers = () => {
 
     return (
         <div className="view-workers-container">
-            <div className="view-workers-header">
-                <h2>View Workers</h2>
-                <p>Monitor and review all service providers in the system</p>
-            </div>
 
             {/* Statistics Cards */}
             <div className="workers-stats">

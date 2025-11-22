@@ -22,49 +22,57 @@
   overflow: hidden;
 }
 
-.content-panel h2 {
-  margin: 0;
-  padding: 20px 30px;
-  color: #fff;
-  font-size: 24px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid #444;
+/* NEW: Dashboard-style header for all components - DARKER */
+.content-header {
+  text-align: center;
+  padding: 25px 30px 15px 30px;
+  position: relative;
   flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(35, 35, 35, 0.98) 0%, rgba(30, 30, 30, 0.95) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* UPDATED: Add bottom padding to content area */
+.content-header h2 {
+  background: linear-gradient(135deg, #fff 0%, var(--primary-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px 0;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 20px rgba(255, 165, 0, 0.2);
+  line-height: 1.2;
+}
+
+/* ENHANCED: More professional subtitle styling */
+.content-header p {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 800px; /* Slightly wider for professional text */
+  margin: 0 auto;
+  line-height: 1.5;
+  font-weight: 400;
+  opacity: 0.8; /* Slightly more visible for professional text */
+  font-style: italic; /* Adds professional touch */
+  letter-spacing: 0.2px; /* Better readability */
+}
+
+/* UPDATED: Content area with proper scrolling and padding */
 .content-area {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding-bottom: 80px; /* Increased bottom padding */
-  min-height: calc(100vh - 80px); /* Added min-height calculation */
+  min-height: 0;
+  padding: 20px 30px;
 }
 
-/* UPDATED: Ensure components have proper bottom spacing */
+/* UPDATED: Ensure components take full width and handle their own padding */
 .content-area > * {
+  width: 100%;
   flex: 1;
-  padding-bottom: 20px; /* Increased safety margin */
-}
-
-.welcome-panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  flex: 1;
-  padding: 30px;
-  padding-bottom: 80px; /* Increased bottom padding for welcome */
-}
-
-.welcome-info {
-  margin-top: 20px;
-  text-align: left;
-  background: #3a3a3a;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 30px; /* Increased bottom margin */
+  min-height: min-content;
 }
 
 /* Enhanced scrollbar for content area */

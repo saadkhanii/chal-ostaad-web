@@ -12,7 +12,7 @@ const WorkerVerification = () => {
   const [message, setMessage] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
   const [filterStatus, setFilterStatus] = useState('pending');
-  const [categories, setCategories] = useState({}); // NEW: Store categories mapping
+  const [categories, setCategories] = useState({});
 
   // Fetch categories from Firestore
   useEffect(() => {
@@ -67,7 +67,7 @@ const WorkerVerification = () => {
     setFilteredWorkers(result);
   }, [workers, filterStatus]);
 
-  // NEW: Helper function to get category name
+  // Helper function to get category name
   const getCategoryName = (categoryId) => {
     return categories[categoryId] || categoryId || 'Unknown Category';
   };
@@ -82,7 +82,7 @@ const WorkerVerification = () => {
         'verification.status': status,
         'verification.verifiedAt': status === 'verified' ? new Date() : null,
         'verification.rejectionReason': reason || '',
-        'verification.verifiedBy': 'Admin System', // In real app, use actual admin name
+        'verification.verifiedBy': 'Admin System',
         'verification.lastUpdated': new Date(),
         'updatedAt': new Date()
       });
@@ -124,10 +124,7 @@ const WorkerVerification = () => {
 
   return (
     <div className="worker-verification-container">
-      <div className="verification-header">
-        <h2>Worker Verification Management</h2>
-        <p>Review and verify worker profiles and documents</p>
-      </div>
+      {/* REMOVED: Header since ContentDisplay handles it */}
 
       {/* Verification Statistics */}
       <div className="verification-stats">
@@ -208,7 +205,6 @@ const WorkerVerification = () => {
                   
                   <div className="worker-info">
                     <h4 className="worker-name">{worker.personalInfo.name}</h4>
-                    {/* UPDATED: Use category name instead of ID */}
                     <p className="worker-details">
                       {worker.personalInfo.phone} • {getCategoryName(worker.workInfo.categoryId)}
                     </p>
@@ -301,7 +297,6 @@ const WorkerVerification = () => {
               <div className="detail-section">
                 <h4>Work Information</h4>
                 <div className="detail-grid">
-                  {/* UPDATED: Use category name instead of ID */}
                   <div className="detail-item">
                     <label>Category:</label>
                     <span>{getCategoryName(selectedWorker.workInfo.categoryId)}</span>

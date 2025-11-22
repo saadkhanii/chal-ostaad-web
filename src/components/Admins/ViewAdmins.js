@@ -63,10 +63,7 @@ const ViewAdmins = () => {
 
   return (
     <div className="view-admins-container">
-      <div className="view-admins-header">
-        <h2>View Administrators</h2>
-        <p>Browse all system administrators (Read-only access)</p>
-      </div>
+     
 
       {/* Statistics Overview */}
       <div className="admins-stats">
@@ -258,7 +255,7 @@ const ViewAdmins = () => {
                   )}
                 </div>
 
-                {/* REMOVED: Admin Actions Section */}
+                
               </div>
             );
           })}

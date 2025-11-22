@@ -136,10 +136,7 @@ const ManageCategories = () => {
 
   return (
     <div className="manage-categories-container">
-      <div className="categories-header">
-        <h2>Manage Categories</h2>
-        <p>Create and manage service categories for workers</p>
-      </div>
+      {/* REMOVED: Header since ContentDisplay handles it */}
 
       <div className="categories-layout">
         {/* Add/Edit Form */}

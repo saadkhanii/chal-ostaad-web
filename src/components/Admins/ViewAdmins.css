@@ -1,27 +1,15 @@
 .view-admins-container {
-  padding: 20px;
-  max-width: 1400px;
+  padding: 0; /* REMOVED padding since ContentDisplay handles it */
+  max-width: none; /* REMOVED max-width for full width */
   margin: 0 auto;
   height: 100%;
-  overflow-y: auto;
-  /* Bottom padding fix */
-  padding-bottom: 80px;
-  min-height: calc(100vh - 80px);
+  overflow-y: visible; /* CHANGED: Let parent handle scrolling */
+  /* REMOVED: Bottom padding and min-height since ContentDisplay handles scrolling */
+  display: flex;
+  flex-direction: column;
 }
 
-.view-admins-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
 
-.view-admins-header h2 {
-  color: var(--white);
-  margin-bottom: 8px;
-}
-
-.view-admins-header p {
-  color: var(--muted);
-}
 
 /* Statistics */
 .admins-stats {
@@ -350,16 +338,3 @@
   }
 }
 
-/* Scrollbar */
-.view-admins-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.view-admins-container::-webkit-scrollbar-track {
-  background: var(--navigation-bg);
-}
-
-.view-admins-container::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
