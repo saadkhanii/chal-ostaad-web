@@ -235,10 +235,11 @@ const ManageAdmins = () => {
 
   return (
     <div className="manage-admins-container">
-      <div className="manage-admins-header">
+      {/* REMOVED: Header since ContentDisplay handles it */}
+      {/* <div className="manage-admins-header">
         <h2>Manage Administrators</h2>
         <p>Update, delete, and manage admin accounts including office assignments</p>
-      </div>
+      </div> */}
 
       {/* Statistics Overview */}
       <div className="admins-stats">

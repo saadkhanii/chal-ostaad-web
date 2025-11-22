@@ -5,7 +5,7 @@ import { auth, db } from '../../firebase/firebaseConfig';
 
 const AddWorker = () => {
   const [categories, setCategories] = useState([]);
-  const [offices, setOffices] = useState([]); // NEW: Offices state
+  const [offices, setOffices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   
@@ -26,7 +26,7 @@ const AddWorker = () => {
       experience: '',
       serviceRadius: 10,
       availability: 'full-time',
-      officeId: '' // NEW: Office assignment field
+      officeId: ''
     },
     // Verification
     verification: {
@@ -58,7 +58,7 @@ const AddWorker = () => {
       }
     };
 
-    // NEW: Fetch offices
+    // Fetch offices
     const fetchOffices = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'offices'));
@@ -109,7 +109,7 @@ const AddWorker = () => {
     };
 
     fetchCategories();
-    fetchOffices(); // NEW: Call offices fetch
+    fetchOffices();
     setAdminInfo();
   }, []);
 
@@ -194,7 +194,7 @@ const AddWorker = () => {
       return;
     }
 
-    // NEW: Office validation (optional but recommended)
+    // Office validation
     if (!formData.workInfo.officeId) {
       setMessage('❌ Please select an office for the worker!');
       setLoading(false);
@@ -218,7 +218,7 @@ const AddWorker = () => {
       // Prepare worker data
       const workerData = {
         ...formData,
-        officeInfo: { // NEW: Add office information
+        officeInfo: {
           officeId: formData.workInfo.officeId,
           officeName: selectedOffice?.basicInfo?.name || 'Unknown Office',
           officeCity: selectedOffice?.basicInfo?.city || 'Unknown City'
@@ -252,7 +252,7 @@ const AddWorker = () => {
           experience: '',
           serviceRadius: 10,
           availability: 'full-time',
-          officeId: '' // NEW: Reset office field
+          officeId: ''
         },
         verification: {
           status: 'pending',
@@ -285,10 +285,7 @@ const AddWorker = () => {
 
   return (
     <div className="add-worker-container">
-      <div className="add-worker-header">
-        <h2>Add New Worker</h2>
-        <p>Register a new service provider to the system</p>
-      </div>
+      {/* REMOVED: Header since ContentDisplay handles it */}
 
       <form onSubmit={handleSubmit} className="add-worker-form">
         {/* Personal Information Section */}
@@ -389,7 +386,7 @@ const AddWorker = () => {
               </select>
             </div>
 
-            {/* NEW: Office Selection Field */}
+            {/* Office Selection Field */}
             <div className="form-group">
               <label>Assigned Office *</label>
               <select

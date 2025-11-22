@@ -296,10 +296,11 @@ const AddOffice = () => {
 
   return (
     <div className="add-office-container">
-      <div className="add-office-header">
+      {/* REMOVED: Header since ContentDisplay handles it */}
+      {/* <div className="add-office-header">
         <h2>Add New Office</h2>
         <p>Register a new office location for Chal Ostaad</p>
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit} className="add-office-form">
         {/* Basic Information Section */}

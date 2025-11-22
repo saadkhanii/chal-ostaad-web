@@ -315,10 +315,10 @@ const DashboardFull = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
+      {/* <div className="dashboard-header">
         <h2>Admin Dashboard</h2>
         <p>Comprehensive overview of your Chal Ostaad system performance</p>
-      </div>
+      </div> */}
 
       {/* Quick Stats Cards - Full Width */}
       <div className="stats-grid">

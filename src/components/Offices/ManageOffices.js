@@ -239,10 +239,7 @@ const ManageOffices = () => {
 
   return (
     <div className="manage-offices-container">
-      <div className="manage-offices-header">
-        <h2>Manage Offices</h2>
-        <p>Update, delete, and manage all office locations</p>
-      </div>
+      {/* REMOVED: Header since ContentDisplay handles it */}
 
       {/* Statistics Overview */}
       <div className="offices-stats">
