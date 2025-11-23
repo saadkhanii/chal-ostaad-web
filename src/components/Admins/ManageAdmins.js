@@ -242,30 +242,49 @@ const ManageAdmins = () => {
       </div> */}
 
       {/* Statistics Overview */}
-      <div className="admins-stats">
-        <div className="stat-card">
-          <div className="stat-number">{admins.length}</div>
-          <div className="stat-label">Total Admins</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.role === 'super').length}
-          </div>
-          <div className="stat-label">Super Admins</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.role === 'sub').length}
-          </div>
-          <div className="stat-label">Sub Admins</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.assignedOffice).length}
-          </div>
-          <div className="stat-label">Assigned to Offices</div>
-        </div>
+     <div className="admins-stats">
+  <div className="stat-card">
+    <div className="stat-icon">👨‍💼</div>
+    <div className="stat-content">
+      <div className="stat-number">{admins.length}</div>
+      <div className="stat-label">Total Admins</div>
+      <div className="stat-trend">All system administrators</div>
+    </div>
+  </div>
+  
+  <div className="stat-card">
+    <div className="stat-icon">👑</div>
+    <div className="stat-content">
+      <div className="stat-number">
+        {admins.filter(admin => admin.role === 'super').length}
       </div>
+      <div className="stat-label">Super Admins</div>
+      <div className="stat-trend">Full system access</div>
+    </div>
+  </div>
+  
+  <div className="stat-card">
+    <div className="stat-icon">👨‍💻</div>
+    <div className="stat-content">
+      <div className="stat-number">
+        {admins.filter(admin => admin.role === 'sub').length}
+      </div>
+      <div className="stat-label">Sub Admins</div>
+      <div className="stat-trend">Limited permissions</div>
+    </div>
+  </div>
+  
+  <div className="stat-card">
+    <div className="stat-icon">🏢</div>
+    <div className="stat-content">
+      <div className="stat-number">
+        {admins.filter(admin => admin.assignedOffice).length}
+      </div>
+      <div className="stat-label">Assigned to Offices</div>
+      <div className="stat-trend">Office administrators</div>
+    </div>
+  </div>
+</div>
 
       {/* Search and Filters */}
       <div className="filters-section">

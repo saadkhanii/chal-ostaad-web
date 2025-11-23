@@ -56,46 +56,66 @@ const ViewAdmins = () => {
   if (loading) {
     return (
       <div className="view-admins-container">
-        <div className="loading-state">Loading admins...</div>
+        <div className="loading-state">
+          <div className="loading-spinner"></div>
+          Loading admins...
+        </div>
       </div>
     );
   }
 
   return (
     <div className="view-admins-container">
-     
-
       {/* Statistics Overview */}
       <div className="admins-stats">
-        <div className="stat-card">
-          <div className="stat-number">{admins.length}</div>
-          <div className="stat-label">Total Admins</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.role === 'super').length}
+        <div className="stat-card total-admins">
+          <div className="stat-icon">👨‍💼</div>
+          <div className="stat-content">
+            <div className="stat-number">{admins.length}</div>
+            <div className="stat-label">Total Admins</div>
+            <div className="stat-trend">All system administrators</div>
           </div>
-          <div className="stat-label">Super Admins</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.role === 'sub').length}
+        
+        <div className="stat-card super-admins">
+          <div className="stat-icon">👑</div>
+          <div className="stat-content">
+            <div className="stat-number">
+              {admins.filter(admin => admin.role === 'super').length}
+            </div>
+            <div className="stat-label">Super Admins</div>
+            <div className="stat-trend">Full system access</div>
           </div>
-          <div className="stat-label">Sub Admins</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-number">
-            {admins.filter(admin => admin.status === 'active').length}
+        
+        <div className="stat-card sub-admins">
+          <div className="stat-icon">👨‍💻</div>
+          <div className="stat-content">
+            <div className="stat-number">
+              {admins.filter(admin => admin.role === 'sub').length}
+            </div>
+            <div className="stat-label">Sub Admins</div>
+            <div className="stat-trend">Limited permissions</div>
           </div>
-          <div className="stat-label">Active Admins</div>
+        </div>
+        
+        <div className="stat-card active-admins">
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <div className="stat-number">
+              {admins.filter(admin => admin.status === 'active').length}
+            </div>
+            <div className="stat-label">Active Admins</div>
+            <div className="stat-trend">Currently active</div>
+          </div>
         </div>
       </div>
 
-      {/* Search and Filters */}
+      {/* Search and Filters - Perfectly aligned in one line */}
       <div className="filters-section">
         <div className="filters-grid">
           {/* Search */}
-          <div className="filter-group">
+          <div className="filter-group search-group">
             <label>Search Admins</label>
             <input
               type="text"
@@ -107,7 +127,7 @@ const ViewAdmins = () => {
           </div>
 
           {/* Role Filter */}
-          <div className="filter-group">
+          <div className="filter-group role-group">
             <label>Role</label>
             <select 
               value={filterRole} 
@@ -121,7 +141,7 @@ const ViewAdmins = () => {
           </div>
 
           {/* Status Filter */}
-          <div className="filter-group">
+          <div className="filter-group status-group">
             <label>Status</label>
             <select 
               value={filterStatus} 
@@ -131,11 +151,12 @@ const ViewAdmins = () => {
               <option value="all">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
+              <option value="suspended">Suspended</option>
             </select>
           </div>
 
           {/* Clear Filters */}
-          <div className="filter-group">
+          <div className="filter-group clear-group">
             <label>&nbsp;</label>
             <button 
               onClick={() => {
@@ -168,7 +189,7 @@ const ViewAdmins = () => {
             }} 
             className="clear-filters-btn"
           >
-            Clear Filters
+            Clear All Filters
           </button>
         </div>
       ) : (
@@ -254,8 +275,6 @@ const ViewAdmins = () => {
                     </div>
                   )}
                 </div>
-
-                
               </div>
             );
           })}
