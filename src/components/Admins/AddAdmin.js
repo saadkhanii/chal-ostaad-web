@@ -10,6 +10,7 @@ const AddAdmin = () => {
     email: '',
     role: 'sub',
     phone: '',
+    cnic: '',
     assignedOffice: '',
     permissions: {
       workers: true,
@@ -45,6 +46,37 @@ const AddAdmin = () => {
     fetchOffices();
   }, []);
 
+  // Format name to capitalize first letters
+  const formatName = (name) => {
+    return name.replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  // Format phone number to Pakistan format: 03xx-xxxxxxx
+  const formatPhone = (phone) => {
+    const numbers = phone.replace(/\D/g, '');
+    if (numbers.length <= 4) {
+      return numbers;
+    } else if (numbers.length <= 11) {
+      return `${numbers.slice(0, 4)}-${numbers.slice(4)}`;
+    }
+    return `${numbers.slice(0, 4)}-${numbers.slice(4, 11)}`;
+  };
+
+  // Format CNIC to Pakistan format: xxxxx-xxxxxxx-x
+  const formatCNIC = (cnic) => {
+    const numbers = cnic.replace(/\D/g, '');
+    if (numbers.length <= 5) {
+      return numbers;
+    } else if (numbers.length <= 12) {
+      return `${numbers.slice(0, 5)}-${numbers.slice(5)}`;
+    } else if (numbers.length <= 13) {
+      return `${numbers.slice(0, 5)}-${numbers.slice(5, 12)}-${numbers.slice(12)}`;
+    }
+    return `${numbers.slice(0, 5)}-${numbers.slice(5, 12)}-${numbers.slice(12, 13)}`;
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
@@ -58,9 +90,20 @@ const AddAdmin = () => {
         }
       }));
     } else {
+      let formattedValue = value;
+
+      // Apply formatting based on field type
+      if (name === 'name') {
+        formattedValue = formatName(value);
+      } else if (name === 'phone') {
+        formattedValue = formatPhone(value);
+      } else if (name === 'cnic') {
+        formattedValue = formatCNIC(value);
+      }
+
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: formattedValue
       }));
     }
   };
@@ -77,6 +120,24 @@ const AddAdmin = () => {
         [permission]: !prev.permissions[permission]
       }
     }));
+  };
+
+  const validateForm = () => {
+    // Phone validation for Pakistan format
+    const phoneRegex = /^03\d{2}-\d{7}$/;
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      setMessage('❌ Please enter a valid Pakistan phone number (03xx-xxxxxxx)');
+      return false;
+    }
+
+    // CNIC validation for Pakistan format
+    const cnicRegex = /^\d{5}-\d{7}-\d{1}$/;
+    if (formData.cnic && !cnicRegex.test(formData.cnic)) {
+      setMessage('❌ Please enter a valid Pakistan CNIC (xxxxx-xxxxxxx-x)');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -115,6 +176,12 @@ const AddAdmin = () => {
       return;
     }
 
+    // Validate phone and CNIC formats
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
+
     // Role-based validation
     if (formData.role === 'sub' && !formData.assignedOffice) {
       setMessage('❌ Sub Admin must be assigned to an office!');
@@ -131,19 +198,22 @@ const AddAdmin = () => {
       );
       const user = userCredential.user;
 
-      // Get assigned office details
+      // Get assigned office details and format office name
       const assignedOffice = offices.find(office => office.id === formData.assignedOffice);
+      const officeName = assignedOffice?.basicInfo?.name ? formatName(assignedOffice.basicInfo.name) : 'Not assigned';
+      const officeCity = assignedOffice?.basicInfo?.city ? formatName(assignedOffice.basicInfo.city) : 'Not assigned';
 
       // 2. Create comprehensive admin document in Firestore
       await setDoc(doc(db, 'admins', user.uid), {
-        name: formData.name,
+        name: formData.name, // Already formatted by handleChange
         email: formData.email,
         role: formData.role,
-        phone: formData.phone,
+        phone: formData.phone, // Already formatted by handleChange
+        cnic: formData.cnic, // Already formatted by handleChange
         assignedOffice: {
           officeId: formData.assignedOffice,
-          officeName: assignedOffice?.basicInfo?.name || 'Not assigned',
-          officeCity: assignedOffice?.basicInfo?.city || 'Not assigned'
+          officeName: officeName,
+          officeCity: officeCity
         },
         permissions: formData.permissions,
         status: 'active',
@@ -168,6 +238,7 @@ const AddAdmin = () => {
         email: '',
         role: 'sub',
         phone: '',
+        cnic: '',
         assignedOffice: '',
         permissions: {
           workers: true,
@@ -214,12 +285,6 @@ const AddAdmin = () => {
 
   return (
     <div className="add-admin-container">
-      {/* REMOVED: Header since ContentDisplay handles it */}
-      {/* <div className="add-admin-header">
-        <h2>Add New Administrator</h2>
-        <p>Create a new admin account with specific permissions and access</p>
-      </div> */}
-      
       <form onSubmit={handleSubmit} className="add-admin-form">
         {/* Basic Information Section */}
         <div className="form-section">
@@ -236,6 +301,7 @@ const AddAdmin = () => {
                 disabled={showPasswordPrompt}
                 placeholder="Enter admin's full name"
               />
+              <small>Name will be automatically capitalized</small>
             </div>
 
             <div className="form-group">
@@ -259,8 +325,24 @@ const AddAdmin = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 disabled={showPasswordPrompt}
-                placeholder="+92 300 1234567"
+                placeholder="03xx-xxxxxxx"
+                maxLength="12"
               />
+              <small>Pakistan format: 03xx-xxxxxxx</small>
+            </div>
+
+            <div className="form-group">
+              <label>CNIC Number</label>
+              <input
+                type="text"
+                name="cnic"
+                value={formData.cnic}
+                onChange={handleChange}
+                disabled={showPasswordPrompt}
+                placeholder="xxxxx-xxxxxxx-x"
+                maxLength="15"
+              />
+              <small>Pakistan CNIC format: xxxxx-xxxxxxx-x</small>
             </div>
 
             <div className="form-group">
@@ -295,7 +377,7 @@ const AddAdmin = () => {
                 <option value="">Select an office</option>
                 {offices.map(office => (
                   <option key={office.id} value={office.id}>
-                    {office.basicInfo.name} - {office.basicInfo.city}
+                    {office.basicInfo.name ? formatName(office.basicInfo.name) : 'Unnamed Office'} - {office.basicInfo.city ? formatName(office.basicInfo.city) : 'Unknown City'}
                   </option>
                 ))}
               </select>

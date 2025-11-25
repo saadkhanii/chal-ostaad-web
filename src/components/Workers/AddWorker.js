@@ -43,6 +43,37 @@ const AddWorker = () => {
 
   const [newSkill, setNewSkill] = useState('');
 
+  // Format name to capitalize first letters
+  const formatName = (name) => {
+    return name.replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  // Format phone number to Pakistan format: 03xx-xxxxxxx
+  const formatPhone = (phone) => {
+    const numbers = phone.replace(/\D/g, '');
+    if (numbers.length <= 4) {
+      return numbers;
+    } else if (numbers.length <= 11) {
+      return `${numbers.slice(0, 4)}-${numbers.slice(4)}`;
+    }
+    return `${numbers.slice(0, 4)}-${numbers.slice(4, 11)}`;
+  };
+
+  // Format CNIC to Pakistan format: xxxxx-xxxxxxx-x
+  const formatCNIC = (cnic) => {
+    const numbers = cnic.replace(/\D/g, '');
+    if (numbers.length <= 5) {
+      return numbers;
+    } else if (numbers.length <= 12) {
+      return `${numbers.slice(0, 5)}-${numbers.slice(5)}`;
+    } else if (numbers.length <= 13) {
+      return `${numbers.slice(0, 5)}-${numbers.slice(5, 12)}-${numbers.slice(12)}`;
+    }
+    return `${numbers.slice(0, 5)}-${numbers.slice(5, 12)}-${numbers.slice(12, 13)}`;
+  };
+
   // Fetch categories AND offices for dropdown and set admin info
   useEffect(() => {
     const fetchCategories = async () => {
@@ -90,7 +121,7 @@ const AddWorker = () => {
             ...prev,
             addedBy: {
               adminId: currentUser.uid,
-              adminName: adminName,
+              adminName: formatName(adminName), // Format admin name
               adminEmail: currentUser.email || 'Unknown Email'
             }
           }));
@@ -100,7 +131,7 @@ const AddWorker = () => {
             ...prev,
             addedBy: {
               adminId: currentUser.uid,
-              adminName: currentUser.displayName || currentUser.email || 'Unknown Admin',
+              adminName: formatName(currentUser.displayName || currentUser.email || 'Unknown Admin'), // Format admin name
               adminEmail: currentUser.email || 'Unknown Email'
             }
           }));
@@ -114,11 +145,23 @@ const AddWorker = () => {
   }, []);
 
   const handlePersonalInfoChange = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+
+    // Apply formatting based on field type
+    if (name === 'name') {
+      formattedValue = formatName(value);
+    } else if (name === 'phone') {
+      formattedValue = formatPhone(value);
+    } else if (name === 'cnic') {
+      formattedValue = formatCNIC(value);
+    }
+
     setFormData({
       ...formData,
       personalInfo: {
         ...formData.personalInfo,
-        [e.target.name]: e.target.value
+        [name]: formattedValue
       }
     });
   };
@@ -139,7 +182,7 @@ const AddWorker = () => {
         ...formData,
         workInfo: {
           ...formData.workInfo,
-          skills: [...formData.workInfo.skills, newSkill.trim()]
+          skills: [...formData.workInfo.skills, formatName(newSkill.trim())] // Format skill name
         }
       });
       setNewSkill('');
@@ -170,6 +213,18 @@ const AddWorker = () => {
     return age;
   };
 
+  // Validate phone number format
+  const validatePhone = (phone) => {
+    const phoneRegex = /^03\d{2}-\d{7}$/;
+    return phoneRegex.test(phone);
+  };
+
+  // Validate CNIC format
+  const validateCNIC = (cnic) => {
+    const cnicRegex = /^\d{5}-\d{7}-\d{1}$/;
+    return cnicRegex.test(cnic);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -184,6 +239,20 @@ const AddWorker = () => {
 
     if (!formData.personalInfo.phone.trim()) {
       setMessage('❌ Phone number is required!');
+      setLoading(false);
+      return;
+    }
+
+    // Phone format validation
+    if (!validatePhone(formData.personalInfo.phone)) {
+      setMessage('❌ Please enter a valid Pakistan phone number (03xx-xxxxxxx)');
+      setLoading(false);
+      return;
+    }
+
+    // CNIC format validation (if provided)
+    if (formData.personalInfo.cnic && !validateCNIC(formData.personalInfo.cnic)) {
+      setMessage('❌ Please enter a valid Pakistan CNIC (xxxxx-xxxxxxx-x)');
       setLoading(false);
       return;
     }
@@ -212,16 +281,22 @@ const AddWorker = () => {
     }
 
     try {
-      // Get selected office details
+      // Get selected office details and format names
       const selectedOffice = offices.find(office => office.id === formData.workInfo.officeId);
+      const officeName = selectedOffice?.basicInfo?.name ? formatName(selectedOffice.basicInfo.name) : 'Unknown Office';
+      const officeCity = selectedOffice?.basicInfo?.city ? formatName(selectedOffice.basicInfo.city) : 'Unknown City';
       
       // Prepare worker data
       const workerData = {
         ...formData,
+        personalInfo: {
+          ...formData.personalInfo,
+          name: formatName(formData.personalInfo.name) // Ensure name is formatted before saving
+        },
         officeInfo: {
           officeId: formData.workInfo.officeId,
-          officeName: selectedOffice?.basicInfo?.name || 'Unknown Office',
-          officeCity: selectedOffice?.basicInfo?.city || 'Unknown City'
+          officeName: officeName,
+          officeCity: officeCity
         },
         ratings: {
           average: 0,
@@ -275,7 +350,18 @@ const AddWorker = () => {
   };
 
   const getSelectedOffice = () => {
-    return offices.find(office => office.id === formData.workInfo.officeId);
+    const office = offices.find(office => office.id === formData.workInfo.officeId);
+    if (office) {
+      return {
+        ...office,
+        basicInfo: {
+          ...office.basicInfo,
+          name: office.basicInfo.name ? formatName(office.basicInfo.name) : 'Unknown',
+          city: office.basicInfo.city ? formatName(office.basicInfo.city) : 'Unknown'
+        }
+      };
+    }
+    return null;
   };
 
   // Calculate age for display
@@ -285,8 +371,6 @@ const AddWorker = () => {
 
   return (
     <div className="add-worker-container">
-      {/* REMOVED: Header since ContentDisplay handles it */}
-
       <form onSubmit={handleSubmit} className="add-worker-form">
         {/* Personal Information Section */}
         <div className="form-section">
@@ -302,6 +386,7 @@ const AddWorker = () => {
                 required
                 placeholder="Enter worker's full name"
               />
+              <small>Name will be automatically capitalized</small>
             </div>
 
             <div className="form-group">
@@ -312,8 +397,10 @@ const AddWorker = () => {
                 value={formData.personalInfo.phone}
                 onChange={handlePersonalInfoChange}
                 required
-                placeholder="+92 300 1234567"
+                placeholder="03xx-xxxxxxx"
+                maxLength="12"
               />
+              <small>Pakistan format: 03xx-xxxxxxx</small>
             </div>
 
             <div className="form-group">
@@ -323,8 +410,10 @@ const AddWorker = () => {
                 name="cnic"
                 value={formData.personalInfo.cnic}
                 onChange={handlePersonalInfoChange}
-                placeholder="12345-6789012-3"
+                placeholder="xxxxx-xxxxxxx-x"
+                maxLength="15"
               />
+              <small>Pakistan CNIC format: xxxxx-xxxxxxx-x</small>
             </div>
 
             <div className="form-group">
@@ -398,7 +487,7 @@ const AddWorker = () => {
                 <option value="">Select an office</option>
                 {offices.map(office => (
                   <option key={office.id} value={office.id}>
-                    {office.basicInfo.name} - {office.basicInfo.city}
+                    {office.basicInfo.name ? formatName(office.basicInfo.name) : 'Unnamed Office'} - {office.basicInfo.city ? formatName(office.basicInfo.city) : 'Unknown City'}
                   </option>
                 ))}
               </select>
